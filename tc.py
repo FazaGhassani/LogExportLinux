@@ -425,7 +425,7 @@ def exportLog(entity_type, entity_id, keyList, startTs, endTs, Interval = 60, is
         
     except Exception as e:
         #print(e)
-        #raise
+        raise
         return -1
 
 if __name__ == '__main__':

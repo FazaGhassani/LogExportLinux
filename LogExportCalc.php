@@ -10,7 +10,7 @@
         $var_format = $_POST['Export'];
         $var_interval = $_POST['interval'];
 
-        $var_interval = $var_intercal * 60;
+        $var_interval = $var_interval * 60;
 	$var_startdate = $var_date1.'T'.$var_time1;
         $var_endate = $var_date2.'T'.$var_time2;
 	$var_arrtel = '';
@@ -32,7 +32,7 @@
         $startdate = (strtotime($var_startdate)*1000)-21600000;
 	$endate = (strtotime($var_endate)*1000)-21600000;
         
-	$command = escapeshellcmd('python3.6 tc.py --mode exportLog --entity_type DEVICE --entity_id '.$var_deviceid.' --keyList '.$var_arrtel.' --startTs '.$startdate.' --endTs '.$endate.' --interval '.$var_interval.' --isTelemetry 1 --limit 500 --agg '.$var_interval.' --format '.$var_format.'');
+	$command = escapeshellcmd('python3.6 tc.py --mode exportLog --entity_type DEVICE --entity_id '.$var_deviceid.' --keyList '.$var_arrtel.' --startTs '.$startdate.' --endTs '.$endate.' --interval '.$var_interval.' --isTelemetry 1 --limit 500 --agg '.$var_mode.' --format '.$var_format.'');
 	#$output = shell_exec($command);
         $output = exec($command);
 	#echo $command;

@@ -19,7 +19,7 @@
             echo '<div class="span2">';
         }
         echo '<label class="checkbox" id="cb">';
-        echo '<input type="checkbox" name="telemetry[]" value="'.$item.'">';
+        echo '<input type="checkbox" name="telemetry[]" value="'.$items.'">';
         echo $items;
         echo '</label>';
         if(($i-1)%5==0){
