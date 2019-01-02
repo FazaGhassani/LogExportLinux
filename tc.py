@@ -1,4 +1,4 @@
-import sys, csv, requests, json, os, inspect, time, pprint
+import sys, csv, requests, json, os, inspect, time, pprint, traceback
 from datetime import datetime
 from time import strftime, localtime
 from openpyxl import Workbook
@@ -166,7 +166,7 @@ def LogQuery(entity_type, entity_id, keyList, startTs, endTs, Interval = 60, isT
         if isTelemetry:
             url = 'http://localhost:8080/api/plugins/telemetry/%s/%s/values/timeseries?keys=' %(entity_type,entity_id)        
         else:
-            url = 'http://localhost:8080/api/plugins/attributes/%s/%s/values/attributes?keys=' %(entity_type,entity_id)
+            url = 'http://localhost:8080/api/plugins/telemetry/%s/%s/values/attributes?keys=' %(entity_type,entity_id)
 
         for i,key in enumerate(keyList):
             if i != len(keyList)-1:
@@ -179,7 +179,7 @@ def LogQuery(entity_type, entity_id, keyList, startTs, endTs, Interval = 60, isT
         if limit != None:
             url += 'limit=%d&' %limit
         url += 'agg=%s' %Agg
-        
+        #print(url)
         headers = {'Accept':'application/json', 'X-Authorization': "Bearer "+JWT_Token}
         Log_JSON = requests.get(url, headers=headers, json=None).json()
         #print(Log_JSON)
@@ -251,13 +251,23 @@ def LogQuery(entity_type, entity_id, keyList, startTs, endTs, Interval = 60, isT
         return [_tsList,Records]
     except Exception as e:
         #raise
-        print(e)
+        #print(e)
+        tb = traceback.format_exc()
+        with open(FolderPath +"/ExceptionLog/LogQuery.txt",'w') as file:
+            file.write(json.dumps(Log_JSON))
+            file.write("\n"+tb+"\n")
         return -1
 
 def LogCollecter(rowPart,colPart,ts,rec,*argv):
-    Result = LogQuery(*argv)
-    ts[rowPart][colPart]=Result[0]
-    rec[rowPart][colPart]=Result[1]
+    try:
+        Result = LogQuery(*argv)
+        ts[rowPart][colPart]=Result[0]
+        rec[rowPart][colPart]=Result[1]
+    except:
+        tb = traceback.format_exc()
+        with open(FolderPath +"/ExceptionLog/LogCollecter.txt",'w') as file:
+            file.write(tb)
+        pass
     
 # Function to Get Historical Value of Variables in Device in .csv or .xlsx format 
 def exportLog(entity_type, entity_id, keyList, startTs, endTs, Interval = 60, isTelemetry=True, limit=500, Agg=NONE, Format=XLSX):
@@ -425,7 +435,10 @@ def exportLog(entity_type, entity_id, keyList, startTs, endTs, Interval = 60, is
         
     except Exception as e:
         #print(e)
-        raise
+        #raise
+        tb = traceback.format_exc()
+        with open(FolderPath +"/ExceptionLog/Export.txt",'w') as file:
+            file.write("\n"+tb+"\n")
         return -1
 
 if __name__ == '__main__':
@@ -437,7 +450,7 @@ if __name__ == '__main__':
     parser.add_argument("--startTs", type=int, help="Start Timestamp in UNIX miliseconds", default=None)
     parser.add_argument("--endTs", type=int, help="End Timestamp in UNIX miliseconds", default=None)
     parser.add_argument("--interval", type=int, help="Aggregation interval in seconds", default=1200)
-    parser.add_argument("--isTelemetry", type=bool, help="1 for telemetry, 0 for attributes", default=1)
+    parser.add_argument("--isTelemetry", type=int, help="1 for telemetry, 0 for attributes", default=1)
     parser.add_argument("--limit", type=int, help="Records Limit", default=500)
     parser.add_argument("--agg", type=str, help="Aggregation Mode", default=AVG)
     parser.add_argument("--format", type=str, help="Log Export File Format", default=XLSX)

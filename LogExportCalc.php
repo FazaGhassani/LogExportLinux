@@ -29,8 +29,10 @@
         #removing space
 	$var_arrtel = preg_replace('/\s/', '', $var_arrtel);
 	#converting into unix epoch
-        $startdate = (strtotime($var_startdate)*1000)-21600000;
-	$endate = (strtotime($var_endate)*1000)-21600000;
+        $startdate = (strtotime($var_startdate)*1000);
+        $endate = (strtotime($var_endate)*1000);
+        #$startdate = (strtotime($var_startdate)*1000)-27120000;
+	#$endate = (strtotime($var_endate)*1000)-27120000;
         
 	$command = escapeshellcmd('python3.6 tc.py --mode exportLog --entity_type DEVICE --entity_id '.$var_deviceid.' --keyList '.$var_arrtel.' --startTs '.$startdate.' --endTs '.$endate.' --interval '.$var_interval.' --isTelemetry 1 --limit 500 --agg '.$var_mode.' --format '.$var_format.'');
 	#$output = shell_exec($command);
@@ -52,6 +54,8 @@
         	flush(); 
 		readfile($file);
 		exit;
+	}else{
+          echo "Service Unavailable";
 	}
 
 ?>

@@ -1,0 +1,6 @@
+
+Traceback (most recent call last):
+  File "tc.py", line 344, in exportLog
+    ts[i] += _ts[i][j]
+TypeError: 'NoneType' object is not iterable
+

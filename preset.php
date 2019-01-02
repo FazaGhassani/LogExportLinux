@@ -28,10 +28,13 @@
 <body>
 
 <?php
-    //http://localhost/scripts/jsontest.php?preset=presetA
+    //logExport.php?json=/BAS_TEKNO_preset.json&preset=panelAB
 
     $q = $_GET["preset"];
-    $str = file_get_contents('/var/www/html/jsontest.json');
+    $getjson = $_GET["json"];
+    $str = '/var/www/html/NewWidgets/logExport';
+    $str .= $getjson;
+    $str = file_get_contents($str);
     $json = json_decode($str,true);
 
     echo '<select name="deviceid" onchange="showUser(this.value)">';
