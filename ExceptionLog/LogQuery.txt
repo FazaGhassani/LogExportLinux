@@ -1,4 +1,4 @@
-{"timestamp": 1546413624380, "status": 503, "error": "Service Unavailable", "exception": "org.springframework.web.context.request.async.AsyncRequestTimeoutException", "message": "No message available", "path": "/api/plugins/telemetry/DEVICE/6335c5c0-d346-11e8-87ee-4be867fcc47c/values/timeseries"}
+{"timestamp": 1546482329472, "status": 503, "error": "Service Unavailable", "exception": "org.springframework.web.context.request.async.AsyncRequestTimeoutException", "message": "No message available", "path": "/api/plugins/telemetry/DEVICE/e99c82d0-d764-11e8-a085-4be867fcc47c/values/timeseries"}
 Traceback (most recent call last):
   File "tc.py", line 195, in LogQuery
     for j, item in enumerate(subval):
